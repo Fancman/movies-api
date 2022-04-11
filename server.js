@@ -11,6 +11,8 @@ let options = {
 	server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
 }; 
 
+// Tutorial: https://www.digitalocean.com/community/tutorials/test-a-node-restful-api-with-mocha-and-chai
+
 //db connection      
 mongoose.connection.openUri(config.DBHost, ( err, res ) => {
 	if (err) throw err;
