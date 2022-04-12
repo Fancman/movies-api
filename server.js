@@ -38,7 +38,9 @@ app.get('/', (req, res) =>
   res.json({ message: 'Welcome to our Movie Reviews API!' })
 );
 
-app.route('/movie').get(movie.getMovies).post(movie.postMovie);
+app.route('/movie')
+	.get(movie.getMovies)
+	.post(movie.postMovie);
 app
   .route('/movie/:id')
   .get(movie.getMovie)
@@ -49,3 +51,79 @@ app.listen(port);
 console.log('Listening on port ' + port);
 
 module.exports = app; // for testing
+
+
+var movies = [
+	{
+		'name': 'The Tragedy of Macbeth',
+		'actors': [
+			'Joel Coen',
+			'Denzel Washington'
+		],
+		'genres': [
+			'Drama',
+			'Thriller',
+			'War'
+		],
+		'description': 'A Scottish lord becomes convinced by a trio of witches that he will become the next King of Scotland, and his ambitious wife supports him in his plans of seizing power.',
+		'image': 'https://m.media-amazon.com/images/M/MV5BMzM0YWNmMDEtNmI3Yy00NjQ4LWJlZjMtMzk2YjUxOThhZGQxXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_FMjpg_UX675_.jpg'
+	},
+	{
+		'name': 'The Northman',
+		'actors': [
+			'Alexander Skarsgård',
+			'Nicole Kidman'
+		],
+		'genres': [
+			'Action',
+			'Adventure',
+			'Drama'
+		],
+		'description': `From visionary director Robert Eggers comes The Northman, an action-filled epic that follows a young Viking prince on his quest to avenge his father's murder.`,
+		'image': 'https://m.media-amazon.com/images/M/MV5BMzVlMmY2NTctODgwOC00NDMzLWEzMWYtM2RiYmIyNTNhMTI0XkEyXkFqcGdeQXVyNTAzNzgwNTg@._V1_.jpg'
+	},
+	{
+		'name': 'Last Night in Soho',
+		'actors': [
+			'Thomasin McKenzie',
+			'Anya Taylor-Joy'
+		],
+		'genres': [
+			'Mystery',
+			'Horror',
+			'Drama'
+		],
+		'description': `An aspiring fashion designer is mysteriously able to enter the 1960s where she encounters a dazzling wannabe singer. But the glamour is not all it appears to be and the dreams of the past start to crack and splinter into something darker.`,
+		'image': 'https://m.media-amazon.com/images/M/MV5BNGJhODg1ODctMGVlNC00ZTdlLThkZTgtNmU5YzE0OWE4NTMxXkEyXkFqcGdeQXVyNzYyOTM1ODI@._V1_.jpg'
+	},
+	{
+		'name': 'Nightmare Alley',
+		'actors': [
+			'Thomasin McKenzie',
+			'Anya Taylor-Joy'
+		],
+		'genres': [
+			'Crime',
+			'Thriller',
+			'Drama'
+		],
+		'description': `A grifter working his way up from low-ranking carnival worker to lauded psychic medium matches wits with a psychiatrist bent on exposing him.`,
+		'image': 'https://m.media-amazon.com/images/M/MV5BOTI4NDhhNGEtZjQxZC00ZTRmLThmZTctOGJmY2ZlOTc0ZGY0XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1012_.jpg'
+	}
+]
+
+async function createMovies(){
+	let Movie = require('./app/models/movie');
+
+	for( const idx in movies ){
+		let findMovie = await Movie.findOne({ name: movies[idx].name }).exec()
+
+		if( !findMovie )
+		{
+			let newMovie = new Movie(movies[idx]);
+			await newMovie.save()
+		}
+	}
+}
+
+createMovies()

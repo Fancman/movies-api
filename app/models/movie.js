@@ -4,9 +4,11 @@ let Schema = mongoose.Schema;
 //movie schema definition
 let MovieSchema = new Schema(
   {
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    year: { type: Number, required: true },
+    name: { type: String, required: true },
+    actors: { type: Array, required: true },
+    genres: { type: Array, required: true },
+	description: { type: String, required: true },
+	image: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },    
   }, 
   { 
