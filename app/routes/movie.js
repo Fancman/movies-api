@@ -17,16 +17,24 @@ function getMovies(req, res) {
 /*
  * POST /movie to save a new movie.
  */
-function postMovie(req, res) {
+async function postMovie(req, res) {
     //Creates a new movie
     var newMovie = new Movie(req.body);
+
+	let findMovie = await Movie.findOne({ name: req.body.name }).exec()
+
+	if(findMovie){
+		res.status(400);
+		return res.send('Duplicate name of movie')
+	}
+
     //Save it into the DB.
     newMovie.save((err, movie) => {
         if(err) {
-            res.send(err);
+            return res.send(err);
         }
         else { //If no errors, send it back to the client
-            res.json({message: "Movie successfully added!", movie });
+            return res.json({message: "Movie successfully added!", movie });
         }
     });
 }
